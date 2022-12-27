@@ -44,7 +44,23 @@ class YouTubeUploader:
 
         #check for Upload Progress
 
-
+		CheckComplete=False
+		while CheckComplete==False:
+			checks_summary=browser.find_element(By.XPATH, "/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[2]/div/div[1]/ytcp-video-upload-progress").get_attribute("checks-summary-status-v2")
+			print(checks_summary)
+			self.ScreenShot()
+			if checks_summary=="UPLOAD_CHECKS_DATA_SUMMARY_STATUS_NOT_STARTED":
+				print(browser.find_element(By.XPATH, "/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[2]/div/div[1]/ytcp-video-upload-progress").text)
+			elif checks_summary=="UPLOAD_CHECKS_DATA_SUMMARY_STATUS_STARTED":
+				print(browser.find_element(By.XPATH, "/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[2]/div/div[1]/ytcp-video-upload-progress").text)
+			elif checks_summary=="UPLOAD_CHECKS_DATA_SUMMARY_STATUS_COMPLETED":
+				CheckComplete=True
+				print("checking complete")
+			else:
+				print("another status May be error"+ browser.find_element(By.XPATH, "/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[2]/div/div[1]/ytcp-video-upload-progress").text)
+				break
+			# CheckComplete=False if checks_summary=="UPLOAD_CHECKS_DATA_SUMMARY_STATUS_NOT_STARTED" else True
+			time.sleep(3)
         #proceed further
 		self.sleep(30)
 		title_field, description_field = browser.find_elements(By.ID, Constant.TEXTBOX_ID)
